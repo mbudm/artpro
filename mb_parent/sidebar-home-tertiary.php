@@ -1,0 +1,1 @@
+<section id="sidebar-home-tertiary"  class="container_24 mb-sidebar"><?php if ( !function_exists('dynamic_sidebar') || !dynamic_sidebar(__('Home Tertiary', TEMPLATE_DOMAIN)) ) : ?><?php endif; ?></section>

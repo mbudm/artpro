@@ -1,0 +1,1 @@
+<aside id="sidebar-artwork-footer" class="mb-sidebar container_24"><?php if ( !function_exists('dynamic_sidebar') || !dynamic_sidebar(__('Artwork Footer', TEMPLATE_DOMAIN)) ) : ?><?php endif; ?></aside>

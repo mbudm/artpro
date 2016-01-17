@@ -1,0 +1,59 @@
+#artwork-order ul:after{
+  content: "\0020";
+  display: block;
+  height: 0;
+  clear: both;
+  overflow: hidden;
+  visibility: hidden;
+}
+#artwork-order li{
+	float:left;
+	margin:0;
+	width:70px;
+	height:70px;
+	padding:10px;
+	border:1px solid #ccc;
+	text-align:center;
+	position:relative;
+	background:#fff;
+}
+
+#artwork-order figure{
+	margin:0;
+}
+
+#artwork-order figcaption{
+	display:none;
+	background:#333;
+	color:#fff;
+	padding:5px;
+	position:absolute;
+	bottom:0;
+}
+#artwork-order .ui-state-highlight{
+	background:#ccc;
+}
+
+.mb_form_field label{
+	width:18%;
+	display:inline-block;
+    float:left;
+    padding-top:0.5em;
+    font-weight:bold;
+}
+.mb_form_field p{
+clear:left;
+	display:block;
+	margin-left:20%;
+	margin-top:0;
+}
+.mb_form_field input,
+.mb_form_field textarea,
+.mb_form_field select{
+	width:75%;
+	margin-left:2%;
+
+}
+.mb_form_field textarea{
+	min-height:80px;
+}

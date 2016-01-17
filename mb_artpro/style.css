@@ -1,0 +1,341 @@
+/*
+Theme Name: MB ArtPro
+Theme URI: http://mbudm.com
+Description: MB ArtPro is a Child Theme built for mb_parent. 
+Template: mb_parent
+Version: 1
+Author: mbudm
+Author URI: http://mbudm.com/
+Text Domain: mb_artpro
+Tags: white, black, gray, light, custom-menu, custom-header, custom-background, one-column, two-columns, left-sidebar, right-sidebar, flexible-width, theme-options, threaded-comments, full-width-template, sticky-post, translation-ready, flexible-width, rtl-language-support
+
+License: GNU General Public License
+License URI: http://www.gnu.org/licenses/gpl-3.0.html
+
+MB ArtPro WordPress Theme, Copyright (C) 2013 Steve Roberts 
+
+*/
+@import url("../mb_parent/style.css");
+
+
+header#branding.header_layout_h h1{
+	line-height:1em;
+}
+
+
+/* MBU Featured Artwork widget */
+
+.simple_tile,.simple_large{
+	text-align:center;
+}
+.simple_tile li,.simple_large li {
+	display:inline-block;
+	margin:40px 9px 20px 9px;
+}
+.simple_tile li figure{
+height: 230px;
+}
+.simple_large li figure
+{
+height: 310px;
+}
+.simple_tile li figure a,.simple_large li figure a{
+	border-style:solid;border-width:20px;margin-top:-40px;
+}
+
+.simple_single{
+	text-align:center;
+}
+.simple_single li{
+	display:inline-block;
+}
+.simple_single figure{
+	margin:10px 5px;
+}
+.simple_single li:first-child figure{
+	margin-top:0;
+}
+.mb_widget_featured_artwork .widget-inner{ /* swiper parent */
+	position:relative;
+	/*overflow:hidden;*/
+	white-space:nowrap;
+	min-height:440px;
+	padding:0;
+}
+.swiper-parent a.next, .swiper-parent a.prev{
+	position:absolute;
+	display:block;
+	height:440px;
+}
+.swiper-parent a.next span, .swiper-parent a.prev span{
+	display:block;
+	position:absolute;
+	top:50%;
+	margin-top:-20px;
+	text-indent:-9000em;
+	width:20px;
+	height:40px;
+	border-radius:0 20px 20px 0;
+}
+.swiper-parent a.next{
+	right:0;
+}
+.swiper-parent a.next span{
+	right:0;
+	border-radius:20px 0 0 20px;
+}
+.swiper-parent a.prev{
+	left:0;
+}
+.swiper{
+	position:absolute;
+	top:0;
+	left:0;
+	white-space:nowrap;
+	display:block;
+	padding:20px 0 0 0;
+}
+.swiper li{
+	display:inline-block;
+	margin-right:20px;
+}
+.swiper-controller{
+	height:30px;
+	width:950px;
+	margin:1em auto 0 auto;
+	padding:5px;
+}
+.swiper-controller a{
+	margin-left:10px;
+	height:30px;
+	display:inline-block;
+}
+.swiper-controller a:first-child{
+	margin-left:0;
+}
+
+/* categories page */
+section>header{
+	border-left-width:5px;
+	border-style:solid;
+}
+section>header h1{
+	padding:0.5em 35px 0.3em;
+	margin:0;
+	display:block;
+}
+section>header>div{
+	margin:0 35px 1em;
+}
+ul.fluid-artwork-list{
+	text-align:center;
+}
+ul.fluid-artwork-list li{
+	display:inline-block;
+	width:auto;
+	float:none;
+	padding:10px;
+}
+ul.fluid-artwork-list figure{
+	width:auto;
+	background:none; 
+}
+ul.fluid-artwork-list figure a{
+	border-width:10px;
+	border-style:solid;
+}
+ul.fluid-artwork-list figure a{
+	background:none; 
+}
+
+ul.grid-artwork-list {
+	margin-top:2em;
+}
+ul.grid-artwork-list li{
+	float:left;
+	margin-bottom:2em;
+}
+ul.grid-artwork-list li figure .vframe{
+	text-align:center;
+}
+ul.grid-artwork-list li figure .vframe > a{
+	display:inline-block;
+}
+
+/* single artwork page */
+#artwork-section{
+	position: relative;
+}
+#artwork-section > a{
+	position:absolute;
+	display:block;
+	height:710px;
+	z-index:10;
+}
+#artwork-section > a > span{
+	display:block;
+	position:absolute;
+	top:50%;
+	margin-top:-40px;
+	width:0;
+	left:0;
+}
+#artwork-section > a.next{
+	right:0;
+}
+#artwork-section > a.next > span{
+	right:0;
+	left:auto;
+}
+#artwork-section > a.prev{
+	left:0;
+}
+
+#artwork-section.artwork_np_thumb > a > span{
+	border-radius:0 40px 40px 0;
+	text-indent:-70px;
+	height:70px;
+	padding:5px 40px 5px 0;
+	overflow:hidden;
+}
+#artwork-section.artwork_np_thumb > a.next > span{
+	border-radius:40px 0 0 40px;
+	text-indent:0;
+	padding:5px 0 5px 40px;
+}
+
+#artwork-section.artwork_np_arrow > a > span img{
+	display:none;
+}
+
+#artwork-section.artwork_np_arrow > a.next {
+	right:5px;
+}
+#artwork-section.artwork_np_arrow > a.prev{
+	left:5px;
+}
+#artwork-section.artwork_np_arrow > a.prev > span {
+   width: 0;
+   height: 0;
+   border-right-width: 40px;
+   border-right-style: solid;
+   border-top: 30px solid transparent;
+   border-bottom: 30px solid transparent;
+}
+
+#artwork-section.artwork_np_arrow > a.next > span {
+   width: 0;
+   height: 0;
+   border-left-width: 40px;
+   border-left-style: solid;
+   border-top: 30px solid transparent;
+   border-bottom: 30px solid transparent;
+}
+
+#artwork-image-nav{
+	width:198px;
+	padding:0;
+	height:710px;
+	border-width:1px;
+	border-style:solid;
+	border-bottom:none;
+	border-top:none;
+}
+#artwork-image-nav li{
+	display:block;
+	line-height:0px;
+	padding:10px 24px;
+}
+#artwork-image-nav li.active-image{
+	
+	border-width:5px;
+	border-style:solid;
+	border-bottom:none;
+	border-top:none;
+	margin-left:-5px;
+	margin-right:-5px;
+}
+
+
+#sidebar-artwork-tabs>ul{
+margin:0 5px;
+}
+#sidebar-artwork-tabs>ul li{
+	display:inline-block;margin-right:30px;
+}
+#sidebar-artwork-tabs>ul li.ui-tabs-active{
+	border-bottom-width:5px;
+	border-style:solid;
+	font-weight:bold;
+}
+#sidebar-artwork-tabs>ul li a{
+	display:inline-block;
+	padding:5px 0;
+}
+#sidebar-artwork-tabs>div{
+	padding:1em 0;
+	margin-top:-1px;
+ 	border-width:1px;
+	border-style:solid;
+	border-left:none;
+	border-right:none;
+}
+#sidebar-artwork-tabs>div h2{
+display:none;
+}
+
+#commentTab{
+	clear:both;
+}
+#sidebar-artwork-tabs #commentTab{
+	border:none;
+	padding:0;
+}
+#sidebar-artwork-tabs #commentTab>.faux-hr{
+	margin-bottom: 1em;
+	margin-top:0;
+}
+#sidebar-artwork-tabs #commentTab>.faux-hr:last-child{
+	margin-top:1em;
+	margin-bottom: 0;
+}
+
+
+/* media queries */
+
+@media only screen and (max-width: 995px) {
+	.simple_single figure,.simple_single figure .vframe{
+		display: block;
+	}
+}
+@media only screen and (min-width: 768px) and (max-width: 995px) {
+	.single-attachment figure{
+		height: auto;
+		width: 758px;
+	}
+	.simple_single figure,
+	.simple_single li{
+		width: 758px;
+	}
+}
+
+@media only screen and (max-width: 767px) {
+	.single-attachment figure{
+		height: auto;
+		width:470px;
+	}
+	.simple_single figure,
+	.simple_single li{
+		width:470px;
+	}
+}
+
+@media only screen and (max-width: 479px) {
+	.single-attachment figure{
+		width:300px;
+	}
+	.simple_single figure,
+	.simple_single li{
+		width:300px;
+	}
+}
