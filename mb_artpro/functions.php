@@ -2,18 +2,18 @@
 
 //this has to be defined here as they are used on hook names
 define('MBUDM_PT_ARTWORK', "mbudm_artwork"); // artwork post type
-	
-add_action( 'after_setup_theme', 'mb_artwork_theme_setup' ); 
+
+add_action( 'after_setup_theme', 'mb_artwork_theme_setup' );
 function mb_artwork_theme_setup(){
-	
+
 	add_theme_support( 'post-thumbnails', array( 'post', MBUDM_PT_ARTWORK ) );
-	
-	if(function_exists('register_sidebar')){ 
+
+	if(function_exists('register_sidebar')){
 		$sidebars = array(
 			'artwork-tabs' => __('Artwork Tabs', TEMPLATE_DOMAIN),
 			'artwork-footer' => __('Artwork Footer', TEMPLATE_DOMAIN)
 		);
-		
+
 		mbudm_register_sidebars($sidebars);
 	}
 }
@@ -65,10 +65,10 @@ add_filter( 'request', 'mbudm_add_cpts_to_rss_feed' );
 add_action( 'widgets_init', 'mb_artpro_widgets_init' );
 function mb_artpro_widgets_init(){
 
-	
+
 	require_once( get_stylesheet_directory() .'/widgets/mb_Artwork_List_Widget.php');
 	require_once( get_stylesheet_directory() .'/widgets/mb_Featured_Artwork_Widget.php');
-	
+
 	//todo
 	/*
 	mb_Artwork_Comment_Widget (shows a thumb and a selected comment - artwork select, comment select (ajax))
@@ -97,12 +97,12 @@ add_action( 'wp_head', 'mb_artwork_customize_css');
 add_action('customize_register', 'mb_artwork_customize');
 function mb_artwork_customize($wp_customize) {
 	global $mbudm_image_sizes;
-	
+
   	$wp_customize->add_section( 'mbudm_artwork', array(
         'title'          => __('Artwork',TEMPLATE_DOMAIN),
         'priority'       => 55,
     ) );
-    
+
     $wp_customize->add_setting( TEMPLATE_DOMAIN.'_options[artwork_category_size]', array(
         'default'        => MBUDM_IMAGESIZE_WIDE_6,
         'transport'=>'postMessage'
@@ -113,7 +113,7 @@ function mb_artwork_customize($wp_customize) {
         'type'    => 'select',
         'choices' => $mbudm_image_sizes
     ) );
-    
+
      $wp_customize->add_setting( TEMPLATE_DOMAIN.'_options[artwork_captions]', array(
         'default'  => '0',
         'transport'=>'postMessage'
@@ -123,7 +123,7 @@ function mb_artwork_customize($wp_customize) {
         'section' => 'mbudm_artwork',
         'type'    => 'checkbox',
     ) );
-    
+
     $wp_customize->add_setting( TEMPLATE_DOMAIN.'_options[artwork_np]', array(
         'default'  => 'thumb',
         'transport'=>'postMessage'
@@ -136,7 +136,7 @@ function mb_artwork_customize($wp_customize) {
         				'artwork_np_thumb'=>'Tabs with thumbnail',
         				'artwork_np_arrow'=>'Simple Arrow')
     ) );
-   
+
 }
 
 
@@ -144,11 +144,11 @@ function mb_artwork_customize($wp_customize) {
 enqueue scripts and CSS
 - adds js and css files to the header/footer
 */
-function mb_artwork_enqueue(){			  
+function mb_artwork_enqueue(){
 	global $post;
-	
+
 	if( !is_admin()){
-	
+
 		$req_common = array(
 		'jquery',
 		'jquery_qtip',
@@ -174,26 +174,26 @@ add_filter('query_vars', 'mbudm_register_query_vars');
 
 /* ARTWORKS */
 
-/* 
+/*
 add custom meta boxes to the admin interface for artwork cpt */
 
 function mbudm_add_artworks_metaboxes(){
 	add_meta_box('mbudm_sticky_meta', __('Featured',TEMPLATE_DOMAIN), 'mbudm_sticky_meta', MBUDM_PT_ARTWORK,'side');
-	
+
 	remove_meta_box( 'postimagediv', MBUDM_PT_ARTWORK, 'side' );
 }
 
-/* 
+/*
 Featured item meta box for Artworks
 */
-function mbudm_sticky_meta() { 
+function mbudm_sticky_meta() {
 	global $post; ?>
 	<input id="mbudm-sticky" name="sticky" type="checkbox" value="sticky" <?php checked(is_sticky($post->ID)); ?> /> <label for="mbudm-sticky" class="selectit"><?php _e('Make this a featured item', TEMPLATE_DOMAIN) ?></label>
 	<?php
 }
 
 
-/* 
+/*
 Save the Metabox Data for Artworks
 - handles all custom meta boxes for MBUDM_PT_ARTWORK custom post type
  */
@@ -207,34 +207,34 @@ function mbudm_save_item_meta($post_id, $post) {
     if (!wp_verify_nonce( $_POST['artworkmeta_noncename'], plugin_basename(__FILE__) )) {
     	return $post->ID;
     }
- 
+
     // Is the user allowed to edit the post or page?
     if ( !current_user_can( 'edit_post', $post->ID ))
         return $post->ID;
- 
+
     // OK, we're authenticated: we need to find and save the data
     // We'll put it into an array to make it easier to loop though.
- 
-    switch($_POST['post_type']) 
+
+    switch($_POST['post_type'])
     {
         case MBUDM_PT_ARTWORK:
-    		
-    		
-    		/* check that this artwork is in all category order arrays for categories 
-    		that it belongs to. Also ensure it is not in any arrays for cats that 
+
+
+    		/* check that this artwork is in all category order arrays for categories
+    		that it belongs to. Also ensure it is not in any arrays for cats that
     		it doesn't belong to (but it might have been before this revision */
     		$args=array(
 			  'taxonomy' => 'category',
 			  'orderby' => 'name',
 			  'order' => 'ASC'
 			  );
-	
+
 			$categories=get_categories($args);
-			
+
 			$post_categories = wp_get_post_categories( $post_id );
 
-			foreach($categories as $category) { 
-				$cat_meta = get_option( "taxonomy_" . $category->cat_ID  ); 
+			foreach($categories as $category) {
+				$cat_meta = get_option( "taxonomy_" . $category->cat_ID  );
 				$order_arr = explode(",",$cat_meta['cat_artwork_order']);
 				if(in_array($category->cat_ID , $post_categories) ){
 					if(!in_array($post_id,$order_arr)){
@@ -243,17 +243,17 @@ function mbudm_save_item_meta($post_id, $post) {
 					}
 				}else{
 					if(($key = array_search($post_id,$order_arr)) !== false) {
-					    // the the post is not in this category so remove it from the order array	
+					    // the the post is not in this category so remove it from the order array
 						unset($order_arr[$key]);
 					}
 				}
 				$cat_meta['cat_artwork_order'] = implode(",",$order_arr);
-				update_option( "taxonomy_" . $category->cat_ID,$cat_meta); 
+				update_option( "taxonomy_" . $category->cat_ID,$cat_meta);
 			}
-    		
+
     	break;
     }
- 
+
     if( $pt_meta){
 		// Add values of $products_meta as custom fields
 		foreach ($pt_meta as $key => $value) { // Cycle through the $products_meta array!
@@ -272,7 +272,7 @@ add_action('save_post', 'mbudm_save_item_meta', 1, 2); // save custom fields for
 
 
 
-/* 
+/*
 Render the featured artworks
 */
 function mbudm_get_featured_artwork($display_mode){
@@ -289,7 +289,7 @@ function mbudm_get_featured_artwork($display_mode){
 
 
 /*
-Called from widget MBU Artwork list 
+Called from widget MBU Artwork list
 - sticky_mode
 - category
 - thumb_size
@@ -330,7 +330,7 @@ function mbudm_get_artwork_list($sticky_mode,$category,$thumb_size,$num_artworks
 		if( isset($category) ){
 			$args['category'] = $category;
 		}
-		
+
 		$query = get_posts( $args );
 		if ( count( $query ) > 0 ) {
 			$filepath = mbudm_get_template_file_path( 'artwork_list.php' );
@@ -344,17 +344,24 @@ function mbudm_get_artwork_list($sticky_mode,$category,$thumb_size,$num_artworks
 		}
 }
 
-function mbudm_get_previous_artwork($aid,$cid){	
+function mbudm_get_previous_artwork($aid,$cid){
 	$order_arr = mbudm_get_artwork_order($cid);
 	if($order_arr){
 		$key = array_search($aid,$order_arr);
-	
+
 		$previous = $aid == reset($order_arr) ? end($order_arr) : $order_arr[$key - 1] ;
-		
 	}else{
-		$previous_obj  = get_previous_post( true ); 
+		$previous_obj  = get_previous_post( true );
 		$previous = $previous_obj->ID;
+
 	}
+/*
+	echo '<pre>';
+	echo 'aid: '.$aid . ' cid: '.$cid.' order_arr: ';
+	print_r( $order_arr );
+	echo  'prev: '. $previous;
+	echo '</pre>';
+	*/
 	return $previous;
 }
 function mbudm_get_next_artwork($aid,$cid){
@@ -362,17 +369,20 @@ function mbudm_get_next_artwork($aid,$cid){
 	if($order_arr){
 		$key = array_search($aid,$order_arr);
 		$next = $aid == end($order_arr) ? reset($order_arr) : $order_arr[$key + 1] ;
-		//echo 'aid: '.$aid. ' key:'. $key. ' next:' . $next ;
 	}else{
-		//echo 'order_arr: '.$order_arr ;
-		$next_obj  = get_next_post( true ); 
+		$next_obj  = get_next_post( true );
 		$next = $next_obj->ID;
 	}
+/*	echo '<pre>';
+	echo 'aid: '.$aid . ' cid: '.$cid.' order_arr: ';
+	print_r( $order_arr );
+	echo  'next: '. $next;
+	echo '</pre>';*/
 	return $next;
 }
 function mbudm_get_artwork_order($cid){
 	$order_arr = false;
-	$cat_meta = get_option( "taxonomy_" . $cid  ); 
+	$cat_meta = get_option( "taxonomy_" . $cid  );
 	if($cat_meta){
 		$order_arr = explode(",",$cat_meta['cat_artwork_order']);
 	}
@@ -393,17 +403,17 @@ function mbudm_artwork_order(){
 			  'orderby' => 'name',
 			  'order' => 'ASC'
 			  );
-	
+
 			$categories=get_categories($args);
-			
-			foreach($categories as $category) { 
-			
+
+			foreach($categories as $category) {
+
 				if(isset($_POST['mb_artwork_order_cat_' . $category->cat_ID]) ){
-					$cat_meta = get_option( "taxonomy_" . $category->cat_ID  ); 
+					$cat_meta = get_option( "taxonomy_" . $category->cat_ID  );
 					$cat_meta['cat_artwork_order'] = $_POST['mb_artwork_order_cat_' . $category->cat_ID];
-					update_option( "taxonomy_" . $category->cat_ID,$cat_meta); 
+					update_option( "taxonomy_" . $category->cat_ID,$cat_meta);
 				}
-				
+
 			}
 		}
  	}
@@ -412,7 +422,7 @@ function mbudm_artwork_order(){
     {
       wp_die( __('You do not have sufficient permissions to access this page.',TEMPLATE_DOMAIN) );
     }
- 
+
     // OK, we're authenticated: we need to find and save the data
     // We'll put it into an array to make it easier to loop though.
 
@@ -427,20 +437,20 @@ function mbudm_artwork_order(){
 		  );
 
 		$categories=get_categories($args);
-		
+
 		$catfields = '';
-		
-		foreach($categories as $category) { 
-		
-			$cat_meta = get_option( "taxonomy_" . $category->cat_ID  ); 
-			
+
+		foreach($categories as $category) {
+
+			$cat_meta = get_option( "taxonomy_" . $category->cat_ID  );
+
 			$catfields .= '<input type="hidden" name="mb_artwork_order_cat_' . $category->cat_ID . '" value="'.$cat_meta['cat_artwork_order'].'" />';
-			
+
 			$saved_order = explode(",",$cat_meta['cat_artwork_order']);
-			
+
 			echo '<div>';
 			echo '<h3>'. $category->name.'</h3>';
-		   
+
 			$alist_args = array('tax_query' => array(
 					array(
 						'taxonomy' => 'category',
@@ -455,38 +465,38 @@ function mbudm_artwork_order(){
 			);
 			// The Query
 			$the_alist_query = new WP_Query( $alist_args );
-			
-			
-	
+
+
+
 			if($the_alist_query->post_count > 0){
 				$msg = 	count($saved_order) . ' - ' . $the_alist_query->post_count . ' | ';
 				$output = $msg . '<ul id="mb_artwork_order_cat_'.$category->cat_ID.'" >';
-				
+
 				//use saved order if it is the same count()
 				if(count($saved_order) == $the_alist_query->post_count ){
-				
-					foreach($saved_order as $aid) { 
-						$output .= '<li id="mb_artwork_'.$aid.'" >'. mbudm_get_post_image($aid, MBUDM_IMAGESIZE_2,false) . '</li>'; 
+
+					foreach($saved_order as $aid) {
+						$output .= '<li id="mb_artwork_'.$aid.'" >'. mbudm_get_post_image($aid, MBUDM_IMAGESIZE_2,false) . '</li>';
 					}
 				}else{
-			
+
 					// The Loop
 					while ( $the_alist_query->have_posts() ) : $the_alist_query->the_post();
-						
-						$output .= '<li id="mb_artwork_'.get_the_id().'" >'. mbudm_get_post_image(get_the_id(), MBUDM_IMAGESIZE_2,false) . '</li>'; 
-						
+
+						$output .= '<li id="mb_artwork_'.get_the_id().'" >'. mbudm_get_post_image(get_the_id(), MBUDM_IMAGESIZE_2,false) . '</li>';
+
 					endwhile;
-					
+
 					// Reset Post Data
 					wp_reset_postdata();
-				
+
 				}
-				
+
 				$output .= '</ul>';
 			}else{
 				$output = '<p>There are no artworks in this category.</p>';
 			}
-			
+
 			echo($output);
 			echo '</div>';
 		}

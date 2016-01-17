@@ -25,11 +25,13 @@
 			    }
 			}
 
+			//echo('nav_cat_id: ' .$nav_cat_id);
+
 			$prev  = mbudm_get_previous_artwork( $post->ID,$nav_cat_id);
 			if($prev){
 				$imgdata = mbudm_get_post_image_tag_and_caption($prev,MBUDM_IMAGESIZE_2);
 				$url = add_querystring_var(get_permalink($prev), 'mb_action','prev');
-				$url = add_querystring_var($url, 'mb_cat',$categories[$nav_cat_id]->term_id);
+				$url = add_querystring_var($url, 'mb_cat',$nav_cat_id);
 				$prevMarkup = '<a class="prev" href="'. $url .'" title="Previous Artwork in '. $nav_cat_term  .': ' . $imgdata['caption']  . '" ><span>'. $imgdata['tag'] .'</span></a>';
 			}else{
 				$prevMarkup = '' ;
