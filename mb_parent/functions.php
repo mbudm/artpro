@@ -9,42 +9,42 @@
 /*
 Theme setup
  - this is the first thing to run. called from 'after_setup_theme'
- - define constants that are able to be defined at this point 
+ - define constants that are able to be defined at this point
  - register sidebars
  - add post thumbnail support
  - define image sizes
  - add custom post types to the rss feed
  */
- 
+
  	define('THEMENAME','MBU Parent Theme'); //friendly punctuated version
 	define('THEMESHORTNAME','mb_parent'); //short name
 	define('THEMEPREFIX','mbp'); //short prefix
 	$td  = end(explode("/", get_template_directory()));
-	define('TEMPLATE_DOMAIN', $td); // theme dir name  - unfriendly lowercase stub type version 
+	define('TEMPLATE_DOMAIN', $td); // theme dir name  - unfriendly lowercase stub type version
 
-add_action( 'after_setup_theme', 'mbudm_theme_setup' ); 
+add_action( 'after_setup_theme', 'mbudm_theme_setup' );
 function mbudm_theme_setup(){
 	global $mbudm_image_sizes;
-	
+
 // show admin bar only for admins
 	if (!current_user_can('manage_options')) {
 		add_filter('show_admin_bar', '__return_false');
 	}
-	
-	
+
+
 	$defaults = array('header-text' => true);
-	add_theme_support( 'custom-header',$defaults); 
-	add_theme_support( 'post-thumbnails' ); 
-		
+	add_theme_support( 'custom-header',$defaults);
+	add_theme_support( 'post-thumbnails' );
+
 /* Disable the Admin Bar. */
 //remove_action( 'init', 'wp_admin_bar_init' );
 
-	
+
 	//define( 'NO_HEADER_TEXT', true );
-	
+
 	load_theme_textdomain(TEMPLATE_DOMAIN);
-	
-	if(function_exists('register_sidebar')){ 
+
+	if(function_exists('register_sidebar')){
 		$sidebars = array(
 			'home-hero'=> __('Home Hero', TEMPLATE_DOMAIN),
 			'home-secondary'=>__('Home Secondary', TEMPLATE_DOMAIN),
@@ -55,12 +55,12 @@ function mbudm_theme_setup(){
 			'header-sbar'=>__('Header', TEMPLATE_DOMAIN),
 			'footer-sbar'=>__('Footer', TEMPLATE_DOMAIN),
 		);
-		
+
 		mbudm_register_sidebars($sidebars);
 	}
-	
 
-	
+
+
 	define('MBUDM_IMAGESIZE_PREFIX','image-');
 	define('MBUDM_IMAGESIZE_BANNER',MBUDM_IMAGESIZE_PREFIX .'24-banner');
 	define('MBUDM_IMAGESIZE_20',MBUDM_IMAGESIZE_PREFIX .'20');
@@ -70,7 +70,7 @@ function mbudm_theme_setup(){
 	define('MBUDM_IMAGESIZE_12',MBUDM_IMAGESIZE_PREFIX .'12');
 	define('MBUDM_IMAGESIZE_8',MBUDM_IMAGESIZE_PREFIX .'8');
 	define('MBUDM_IMAGESIZE_6',MBUDM_IMAGESIZE_PREFIX .'6');
-	
+
 	define('MBUDM_IMAGESIZE_THUMB_6',MBUDM_IMAGESIZE_PREFIX .'thumb-6');
 	define('MBUDM_IMAGESIZE_WIDE_6',MBUDM_IMAGESIZE_PREFIX .'wide-6');
 	define('MBUDM_IMAGESIZE_5',MBUDM_IMAGESIZE_PREFIX .'5');
@@ -78,11 +78,11 @@ function mbudm_theme_setup(){
 	define('MBUDM_IMAGESIZE_3',MBUDM_IMAGESIZE_PREFIX .'3');
 	define('MBUDM_IMAGESIZE_2',MBUDM_IMAGESIZE_PREFIX .'2');
 	define('MBUDM_IMAGESIZE_1',MBUDM_IMAGESIZE_PREFIX .'1');
-	
+
 	mbudm_add_image_size('Full width banner (950 x 400)', MBUDM_IMAGESIZE_BANNER, 950, 400 ); //banner
-	mbudm_add_image_size('5/6 (790 x 790)', MBUDM_IMAGESIZE_20, 790, 790 ); 
-	mbudm_add_image_size('3/4 (710 x 710)', MBUDM_IMAGESIZE_18, 710, 710 ); 
-	mbudm_add_image_size('3/4 WIDE (950 x 710)', MBUDM_IMAGESIZE_WIDE_18, 950, 710 ); //a bit taller than a banner 
+	mbudm_add_image_size('5/6 (790 x 790)', MBUDM_IMAGESIZE_20, 790, 790 );
+	mbudm_add_image_size('3/4 (710 x 710)', MBUDM_IMAGESIZE_18, 710, 710 );
+	mbudm_add_image_size('3/4 WIDE (950 x 710)', MBUDM_IMAGESIZE_WIDE_18, 950, 710 ); //a bit taller than a banner
 	mbudm_add_image_size('2/3 (630 x 630)', MBUDM_IMAGESIZE_16, 630, 630 );
 	mbudm_add_image_size('1/2 (470 x 470)', MBUDM_IMAGESIZE_12, 470, 470 );
 	mbudm_add_image_size('1/3 (310 x 310)', MBUDM_IMAGESIZE_8, 310, 310 );
@@ -95,8 +95,8 @@ function mbudm_theme_setup(){
 	mbudm_add_image_size('1/12 (70 x 70) - cropped', MBUDM_IMAGESIZE_2, 70, 70 , true ); // tiny thumbnails
 	mbudm_add_image_size('1/24 (30 x 30) - cropped', MBUDM_IMAGESIZE_1, 30, 30 , true );  //only avatars really
 
-	
-	
+
+
 	define('MBUDM_HERO_TILE','simple_tile');
 	define('MBUDM_HERO_LARGE','simple_large');
 	define('MBUDM_HERO_SINGLE','simple_single');
@@ -124,7 +124,7 @@ function mbudm_add_image_size( $size_name, $size_slug, $size_w, $size_h , $scale
 
 function mbudm_register_sidebars($sidebars){
 	foreach($sidebars as $sidebar_id => $sidebar_name ){
-			//xtra widget class 
+			//xtra widget class
 			switch($sidebar_id){
 				case '':
 					$widget_class = 'grid_24 ';
@@ -149,18 +149,18 @@ function mbudm_register_sidebars($sidebars){
 /*
 mbudm_init()
 - all tasks that need to be triggered by the init hook
-- create custom post type and 
+- create custom post type and
 - define constants that were not able to be set up in mbudm_theme_setup();
-- setup the default theme options array 
+- setup the default theme options array
 - set up the wp menu in this theme
 */
 add_action( 'init', 'mbudm_init' );
 function mbudm_init(){
 
 	mbudm_post_types();
-	
+
 	mbudm_define_constants();
-	
+
 	mbudm_setup_menus();
 }
 
@@ -173,7 +173,7 @@ if ( ! function_exists( 'mbudm_post_types' ) ) {
 }
 
 
-/* define constants 
+/* define constants
 - called from mbudm_init()
 - these are constants that either could not be set up in theme_setup() - because the info, objects weren't ready or the constants are not needed before init.
 */
@@ -189,7 +189,7 @@ function mbudm_define_constants(){
 	define('MBUDM_MAILING_LIST_UNSUBSCRIBED', 0); // user meta value for unsubscribed
 	define('MBUDM_MAILING_LIST_PENDING', 1); // user meta value for pending subscription
 	define('MBUDM_MAILING_LIST_SUBSCRIBED', 2); // user meta value for subscribed subscription
-	
+
 }
 
 /*
@@ -199,9 +199,9 @@ Menus
 function mbudm_setup_menus(){
 	//Add support for nav menus
 	add_theme_support( 'nav-menus' );
-	
+
 	//Register the menu location
-	if(function_exists('register_nav_menu')):	
+	if(function_exists('register_nav_menu')):
 		register_nav_menu( 'primary_nav',  _x('Main','Nav Menu',TEMPLATE_DOMAIN)  );
 		register_nav_menu( 'footer_nav',  _x('Footer','Nav Menu',TEMPLATE_DOMAIN) );
 	endif;
@@ -236,7 +236,7 @@ add_filter('image_size_names_choose', 'mbudm_image_sizes_choose');
 
 /* COMMENTS */
 
-function mbudm_format_comment($comment, $args, $depth)  {  
+function mbudm_format_comment($comment, $args, $depth)  {
 
         $GLOBALS['comment'] = $comment; ?>
         <li <?php comment_class(empty( $args['has_children'] ) ? 'cfix' : 'parent cfix') ?>  id="comment-<?php comment_ID() ?>">
@@ -251,24 +251,24 @@ function mbudm_format_comment($comment, $args, $depth)  {
             	<div class="inner">
                 <?php if ($args['avatar_size'] != 0) echo get_avatar( $comment, $args['avatar_size'] , get_template_directory() .'/img/rodin_avatar.png' ); ?>
                 	<h4><?php printf(__('%s'), get_comment_author_link()) ?></h4>
-                	<time datetime="<?php echo get_comment_date(DATE_ISO8601); ?>" ><?php echo get_comment_date("d M Y"); ?><span><?php echo get_comment_time("g:ia"); ?></span></time> 
+                	<time datetime="<?php echo get_comment_date(DATE_ISO8601); ?>" ><?php echo get_comment_date("d M Y"); ?><span><?php echo get_comment_time("g:ia"); ?></span></time>
                 </div>
             </div>
-            
+
             <div class="comment_body grid_18 pull_6" >
             	<div class="inner">
             		<div class="comment_text cfix">
             <?php if ($comment->comment_approved == '0') : ?>
                 		<em><php _e('Your comment is awaiting moderation.') ?></em>
             <?php endif; ?>
-            			<?php 
+            			<?php
 					echo comment_reply_link(array_merge($args,array('reply_text' => 'Reply', 'add_below' => 'comment-', 'depth' => $depth, 'max_depth' => $args['max_depth']) ) );
 					?><?php comment_text(); ?>
 					</div>
             	</div>
             </div>
 <?php
-} 
+}
 
 /* WIDGETS */
 
@@ -288,8 +288,8 @@ function mbudm_widgets_init(){
 	include ('widgets/mb_Social_Media_Follow_Widget.php');
 	include ('widgets/mb_Social_Media_Share_Widget.php');
 	include ('widgets/mb_Text_Widget.php');
-	
-	
+
+
 	register_widget( 'mb_Contact_Form_Widget' );
 	register_widget( 'mb_Featured_Comment_Widget' );
 	register_widget( 'mb_Mailing_List_Widget' );
@@ -325,7 +325,7 @@ function mbudm_widget_form_extend( $instance, $widget ) {
 	//put it at the end?
 	/*
 	echo '<pre>';
-	print_r($instance); 
+	print_r($instance);
 	print_r($widget);
 	echo '</pre>';
 	*/
@@ -354,10 +354,10 @@ function mbudm_dynamic_sidebar_params( $params ) {
 	$widget_obj    = $wp_registered_widgets[$widget_id];
 	$widget_opt    = get_option($widget_obj['callback'][0]->option_name);
 	$widget_num    = $widget_obj['params'][0]['number'];
-	
+
 	if ( isset($widget_opt[$widget_num]['grid']) && !empty($widget_opt[$widget_num]['grid']) )
 	$params[0]['before_widget'] = preg_replace( '/class="/', "class=\"{$widget_opt[$widget_num]['grid']} ", $params[0]['before_widget'], 1 );
-	
+
 	return $params;
 }
 add_filter( 'dynamic_sidebar_params', 'mbudm_dynamic_sidebar_params' );
@@ -412,7 +412,7 @@ function mbudm_customize($wp_customize) {
         'section' => 'colors',
         'settings'   => TEMPLATE_DOMAIN.'_options[key_color]'
     ) ) );
-    
+
     $wp_customize->add_setting( TEMPLATE_DOMAIN.'_options[secondary_color]', array(
         'default'        => '#003366',
         'transport'=>'postMessage'
@@ -422,7 +422,7 @@ function mbudm_customize($wp_customize) {
         'section' => 'colors',
         'settings'   => TEMPLATE_DOMAIN.'_options[secondary_color]'
     ) ) );
-    
+
     $wp_customize->add_setting( TEMPLATE_DOMAIN.'_options[base_white]', array(
         'default'        => '#ffffff',
         'transport'=>'postMessage'
@@ -504,18 +504,18 @@ function mbudm_customize($wp_customize) {
         'section' => 'colors',
         'settings'   => TEMPLATE_DOMAIN.'_options[base_black]',
     ) ) );
-    
+
     $wp_customize->add_section( 'mbudm_branding', array(
         'title'          => __('Branding (header)',TEMPLATE_DOMAIN),
         'priority'       => 35,
     ) );
 
-    
+
     $wp_customize->add_setting( TEMPLATE_DOMAIN.'_options[branding_font]', array(
         'default'  => 'Georgia',
         'transport'=>'postMessage'
     ) );
-    
+
       $wp_customize->add_control( TEMPLATE_DOMAIN.'_options[branding_font]', array(
         'label'   => __('Brand font',TEMPLATE_DOMAIN),
         'section' => 'mbudm_branding',
@@ -530,7 +530,7 @@ function mbudm_customize($wp_customize) {
         'section' => 'mbudm_branding',
         'type'    => 'checkbox',
     ) );
-    
+
 	$wp_customize->add_setting( TEMPLATE_DOMAIN.'_options[branding_font_size]', array(
         'default'  => '1.4em',
         'transport'=>'postMessage'
@@ -541,19 +541,19 @@ function mbudm_customize($wp_customize) {
         'type'    => 'select',
         'choices' => $mbudm_font_sizes
     ) );
-    
+
     $wp_customize->add_setting( TEMPLATE_DOMAIN.'_options[branding_font_spacing]', array(
         'default'  => '0em',
         'transport'=>'postMessage'
     ) );
-    
+
       $wp_customize->add_control( TEMPLATE_DOMAIN.'_options[branding_font_spacing]', array(
         'label'   => __('Brand font letter spacing (e.g. 1px or 0.5em)',TEMPLATE_DOMAIN),
         'section' => 'mbudm_branding',
         'type'    => 'text',
     ) );
-    
-    
+
+
      $wp_customize->add_setting( TEMPLATE_DOMAIN.'_options[header_layout]', array(
         'default'        => 'header_layout_h',
         'transport'=>'postMessage'
@@ -567,12 +567,12 @@ function mbudm_customize($wp_customize) {
 				'header_layout_v'=>'Vertical layout'
 			)
     ) );
-    
+
     $wp_customize->add_section( 'mbudm_heading_font', array(
         'title'          => __('Headings/Subheadings text style',TEMPLATE_DOMAIN),
         'priority'       => 40,
     ) );
-    
+
     $wp_customize->add_setting( TEMPLATE_DOMAIN.'_options[heading_font]', array(
         'default'        => 'Georgia',
         'transport'=>'postMessage'
@@ -591,7 +591,7 @@ function mbudm_customize($wp_customize) {
         'section' => 'mbudm_heading_font',
         'type'    => 'checkbox',
     ) );
-    
+
 	$wp_customize->add_setting( TEMPLATE_DOMAIN.'_options[heading_font_size]', array(
         'default'  => '1.4em',
         'transport'=>'postMessage'
@@ -602,7 +602,7 @@ function mbudm_customize($wp_customize) {
         'type'    => 'select',
         'choices' => $mbudm_font_sizes
     ) );
-    
+
     $wp_customize->add_section( 'mbudm_body_font', array(
         'title'          => __('Body text style',TEMPLATE_DOMAIN),
         'priority'       => 45,
@@ -616,7 +616,7 @@ function mbudm_customize($wp_customize) {
         'section' => 'mbudm_body_font',
         'type'    => 'text',
     ) );
-    
+
    $wp_customize->add_setting( TEMPLATE_DOMAIN.'_options[body_font_type]', array(
         'default'  => '0',
         'transport'=>'postMessage'
@@ -629,15 +629,15 @@ function mbudm_customize($wp_customize) {
 	$wp_customize->add_setting( TEMPLATE_DOMAIN.'_options[body_font_size]', array(
         'default'  => '1em',
         'transport'=>'postMessage'
-    ) ); 
+    ) );
     $wp_customize->add_control(  TEMPLATE_DOMAIN.'_options[body_font_size]', array(
         'label'   => __('Body font size',TEMPLATE_DOMAIN),
         'section' => 'mbudm_body_font',
         'type'    => 'select',
         'choices' => $mbudm_font_sizes
     ) );
-	
-    
+
+
     $wp_customize->add_section( 'mbudm_nav', array(
         'title'          => __('Navigation text style',TEMPLATE_DOMAIN),
         'priority'       => 50,
@@ -651,7 +651,7 @@ function mbudm_customize($wp_customize) {
         'section' => 'mbudm_nav',
         'type'    => 'text',
     ) );
-    
+
     $wp_customize->add_setting( TEMPLATE_DOMAIN.'_options[nav_font_type]', array(
         'default'  => '0',
         'transport'=>'postMessage'
@@ -671,12 +671,12 @@ function mbudm_customize($wp_customize) {
         'type'    => 'select',
         'choices' => $mbudm_font_sizes
     ) );
-    
+
        $wp_customize->add_section( 'mbudm_footer', array(
         'title'          => __('Footer',TEMPLATE_DOMAIN),
         'priority'       => 200,
     ) );
-    
+
      $wp_customize->add_setting( TEMPLATE_DOMAIN.'_options[copyright_notice]', array(
         'default'        => 'Copyright 2013',
         'transport'=>'postMessage'
@@ -716,7 +716,7 @@ function mbudm_add_mailing_list_column_value( $value, $column_name, $user_id ){
 }
 function mbudm_mailing_list_admin_page(){
 
-	//must check that the user has the required capability 
+	//must check that the user has the required capability
     if (!current_user_can('update_themes'))
     {
       wp_die( __('You do not have sufficient permissions to access this page.',TEMPLATE_DOMAIN) );
@@ -729,7 +729,7 @@ function mbudm_mailing_list_admin_page(){
 	<form method='post' id='mb_export_mailing_list' >
 		<?php
 		// Noncename needed to verify where the data originated
-		wp_nonce_field( 'mb_export_mailing_list', '_wpnonce_mb_export_mailing_list'); 
+		wp_nonce_field( 'mb_export_mailing_list', '_wpnonce_mb_export_mailing_list');
 		?>
 			<input type="hidden" name="mb_settings_form_id" value="mb_export_mailing_list" />
 			<input type="hidden" name="mb_settings_form_name" value="<?php _e('Export mailing list as CSV',TEMPLATE_DOMAIN); ?>" />
@@ -741,7 +741,7 @@ function mbudm_mailing_list_admin_page(){
 add_action( 'show_user_profile', 'mbudm_profile_mailing_list' );
 add_action( 'edit_user_profile', 'mbudm_profile_mailing_list' );
 
-/* 
+/*
 Export Mailing List to a CSV file
 Modified from the following plugin:
 Plugin Name: Export Users to CSV
@@ -760,10 +760,10 @@ function mbudm_export_mailing_list() {
 				'role' => ''
 			);
 			$users = get_users( $args );
-		
+
 			$col_headings = array(
-				'ID' =>__('User ID',TEMPLATE_DOMAIN), 
-				'user_login' =>__('Login',TEMPLATE_DOMAIN), 
+				'ID' =>__('User ID',TEMPLATE_DOMAIN),
+				'user_login' =>__('Login',TEMPLATE_DOMAIN),
 				'user_email' =>__('Email',TEMPLATE_DOMAIN),
 				'first_name' =>__('First name',TEMPLATE_DOMAIN),
 				'last_name' =>__('Last name',TEMPLATE_DOMAIN),
@@ -771,7 +771,7 @@ function mbudm_export_mailing_list() {
 				'_mbudm_mailing_list' =>__('Subscribed',TEMPLATE_DOMAIN),
 				'user_registered' =>__('Date registered',TEMPLATE_DOMAIN)
 			);
-				
+
 			if ( ! $users ) {
 				$referer = add_query_arg( 'error', 'empty', wp_get_referer() );
 				wp_redirect( $referer );
@@ -821,7 +821,7 @@ function mbudm_profile_mailing_list( $user ) { ?>
 			<th><label for="mbudm_mailing_list"><?php printf(__('Mailing list subscription for %s.',TEMPLATE_DOMAIN),get_bloginfo() ); ?></label></th>
 
 			<td>
-			<?php 
+			<?php
 			$mailing_list_status = get_user_meta($user->ID, '_mbudm_mailing_list', true);
 			$mailing_list_checked = $mailing_list_status ? 'checked' : '' ;
 
@@ -852,35 +852,35 @@ Usage: [widget_via_shortcode widget_name="your_Widget_Class_Name" widget_option_
 */
 function widget_via_shortcode_parser( $atts, $content = null ){
 	global $wp_widget_factory;
-    
+
     extract(shortcode_atts(array(
         'widget_name' => FALSE
     ), $atts));
-    
+
     $widget_name = esc_html($widget_name);
-    
+
     if (!is_a($wp_widget_factory->widgets[$widget_name], 'WP_Widget')):
         $wp_class = 'WP_Widget_'.ucwords(strtolower($widget_name));
-        
+
         if (!is_a($wp_widget_factory->widgets[$wp_class], 'WP_Widget')):
             return '<p>'.sprintf(__("%s: Widget class not found. Make sure this widget exists and the class name is correct", TEMPLATE_DOMAIN ) ,'<strong>'.$widget_name.'</strong>').'</p>';
         else:
             $widget_name = $wp_class;
         endif;
     endif;
-    
+
     /* use the widget defaults, if they are accessible. Override any defaults with an equivalent attribute that was added to the shortcode */
     if(is_array($wp_widget_factory->widgets[$widget_name]->defaults) ){
     	$combined_atts = array_merge($wp_widget_factory->widgets[$widget_name]->defaults,$atts);
     }else{
     	$combined_atts = $atts;
     }
-    
+
 	ob_start();
 	the_widget($widget_name, $combined_atts, null );
 	$output = ob_get_contents();
 	ob_end_clean();
-	
+
 	return $output;
 }
 add_shortcode( 'widget_via_shortcode', 'widget_via_shortcode_parser' );
@@ -905,7 +905,7 @@ function section_shortcode_parser( $atts, $content = null ){
 	<?php
 	$output = ob_get_contents();
 	ob_end_clean();
-	
+
 	//add_filter( 'the_content', 'wpautop' , 12);
 	return $output;
 }
@@ -924,7 +924,7 @@ function clear_shortcode_parser( $atts, $content = null ){
 	<?php
 	$output = ob_get_contents();
 	ob_end_clean();
-	
+
 	return $output;
 }
 add_shortcode( 'clear', 'clear_shortcode_parser' );
@@ -939,12 +939,12 @@ function mbudm_get_post_image($pid = null,$image_size = null,$link = false,$grid
 		$pid = get_the_ID();
 	if($image_size == null )
 		$image_size = MBUDM_IMAGESIZE_3;
-	
+
 	// find something to use as a description
 	$p_title = get_the_title($pid );
 	$p_ex = get_the_excerpt();
 	$p_desc = $p_ex ? $p_ex : $p_title;
-	
+
 	if($link){
 		$p_url		= get_permalink($pid );
 		$url_tag_open = '<a href="'.$p_url.'" title="'.$p_title.'" >';
@@ -952,7 +952,7 @@ function mbudm_get_post_image($pid = null,$image_size = null,$link = false,$grid
 		$url_tag_open  = null;
 	}
 	$imgdata = mbudm_get_post_image_tag_and_caption($pid,$image_size);
-	
+
 	$imgdata['caption'] = $imgdata['caption'] ? $imgdata['caption'] : $p_desc ;
 	return mbudm_render_image($imgdata,$url_tag_open,$gridClass);
 }
@@ -962,10 +962,10 @@ function mbudm_get_image($img_id = null,$image_size = null,$post_link = false,$g
 		return;
 	if($image_size == null )
 		$image_size = MBUDM_IMAGESIZE_12;
-	
-			
+
+
 	$imgdata = mbudm_get_image_tag_and_caption(get_the_ID(),$img_id,$image_size);
-	
+
 	$url_tag_open = $post_link;
 	if($url_tag_open){
 		//add a link to the post with the image id as a param
@@ -989,26 +989,27 @@ function mbudm_get_post_image_tag_and_caption($pid,$image_size){
 			$p_img_id = $data['id'];
 		}
 	}
-	
+
 	return mbudm_get_image_tag_and_caption($pid, $p_img_id,$image_size);
 }
 /* get the image tag and caption by image id */
 function mbudm_get_image_tag_and_caption($pid, $img_id, $image_size){
 	if(isset($img_id)){
 		$img_atts  = wp_get_attachment_image_src( $img_id,  $image_size, false);
-		
+
 		$img_tag		= '<img src="' . $img_atts[0] . '"  width="' . $img_atts[1] . '"  height="' . $img_atts[2] . '"  class="attachment-' . $image_size . '" />';
-		
+
 		$img_post = get_post($img_id);
 		//var_dump($img_post);
 		//$img_caption = $img_post->post_excerpt ? $img_post->post_excerpt : $img_post->post_title ;
 		$img_caption = get_the_excerpt();
-	}else{ 
+	}else{
 		$img_caption = get_the_excerpt();
 		$img_tag	= null;
 	}
+  $img_caption = empty($img_caption) ? get_the_title($pid) : $img_caption ;
 	$imgdata = array('tag' => $img_tag, 'caption' => $img_caption);
-	
+
 	//echo('tag: '.$img_tag .'caption: '.$img_caption . ' ' . $imgdata['tag']);
 	return $imgdata;
 }
@@ -1019,17 +1020,17 @@ function mbudm_render_image($imgdata,$url_tag_open,$gridClass){
 	?>
 	<figure class="<?php echo $gridClass . ' ' . $imgClass ?> ">
 		<div class="vframe"><!-- used for vertical centering -->
-			<?php 	
+			<?php
 			if($url_tag_open){
 				echo $url_tag_open;
 			}else{
 				echo '<div>';
 			}
 			if (isset($imgdata) && isset($imgdata['tag'])){
-				echo $imgdata['tag']; 
-			}else{ 
-			?><span><?php _e('No Image Available',TEMPLATE_DOMAIN); ?></span><?php 
-			} 
+				echo $imgdata['tag'];
+			}else{
+			?><span><?php _e('No Image Available',TEMPLATE_DOMAIN); ?></span><?php
+			}
 			if($url_tag_open){
 				echo '</a>';
 			}else{
@@ -1047,11 +1048,11 @@ function mbudm_render_image($imgdata,$url_tag_open,$gridClass){
 
 function mb_featured_image($image_size = null) {
 	global $post;
-	
+
 	if (has_post_thumbnail() ) {
 	if($image_size == null )
 		$image_size = MBUDM_IMAGESIZE_THUMB_6;
-	
+
 		//echo '<div class="post-thumb grid_6" >' . mbudm_get_post_image($post->ID,MBUDM_IMAGESIZE_THUMB_6,true) . '</div>';
 		echo mbudm_get_post_image($post->ID,$image_size ,true);
 	}
@@ -1064,21 +1065,21 @@ function mb_featured_image($image_size = null) {
 enqueue scripts and CSS
 - adds js and css files to the header/footer
 */
-function mbudm_enqueue(){			  
+function mbudm_enqueue(){
 	global $post;
-	
+
 	wp_deregister_script('jquery');
 	/*wp_register_script('jquery', 'http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js', false, '1.7.1',true);
 	 for working offline
 	*/
 	wp_register_script('jquery', get_template_directory_uri() . '/js/libs/jquery-1.8.3.js', false, '1.8.3',true);
-	
+
 	wp_enqueue_script('jquery');
-	
+
 	if( !is_admin()){
-	
+
 		mbudm_google_font_enqueue();
-		
+
 		wp_register_script('respond',get_template_directory_uri() . '/js/libs/respond.min.js',false,'1');
 		wp_enqueue_script('respond');
 		wp_register_script('modernizr',get_template_directory_uri() . '/js/libs/modernizr-2.0.6.min.js',false,'2.0.6');
@@ -1117,15 +1118,15 @@ add_action('wp_enqueue_scripts', 'mbudm_enqueue');
 if (!function_exists('mbudm_google_font_enqueue')){
 	function mbudm_google_font_enqueue(){
 		$mods = get_theme_mods();
-			
+
 		if( isset($mods[TEMPLATE_DOMAIN.'_options']) ){
 			$artpro_mods = $mods[TEMPLATE_DOMAIN.'_options'];
-			
+
 			$fonts = array();
-			$fonts[] = isset($artpro_mods['branding_font']) && $artpro_mods['branding_font_type'] ? $artpro_mods['branding_font'] :''; 
-			$fonts[] = isset($artpro_mods['heading_font']) && $artpro_mods['heading_font_type'] ? $artpro_mods['heading_font'] :''; 
-			$fonts[] = isset($artpro_mods['body_font']) && $artpro_mods['body_font_type'] ? $artpro_mods['body_font'] :'';  
-			$fonts[] = isset($artpro_mods['nav_font']) && $artpro_mods['nav_font_type'] ? $artpro_mods['nav_font'] :'';  
+			$fonts[] = isset($artpro_mods['branding_font']) && $artpro_mods['branding_font_type'] ? $artpro_mods['branding_font'] :'';
+			$fonts[] = isset($artpro_mods['heading_font']) && $artpro_mods['heading_font_type'] ? $artpro_mods['heading_font'] :'';
+			$fonts[] = isset($artpro_mods['body_font']) && $artpro_mods['body_font_type'] ? $artpro_mods['body_font'] :'';
+			$fonts[] = isset($artpro_mods['nav_font']) && $artpro_mods['nav_font_type'] ? $artpro_mods['nav_font'] :'';
 			$fontStr = '';
 			$unique_fonts = array_unique($fonts);
 			foreach($unique_fonts as $font){
@@ -1134,7 +1135,7 @@ if (!function_exists('mbudm_google_font_enqueue')){
 					$fontStr .= $font .':400,b';
 				}
 			}
-			
+
 			if(strlen($fontStr) > 0 && !IS_OFFLINE){
 				$webfonts = 'http://fonts.googleapis.com/css?family='.$fontStr ;
 				wp_register_style('mb_fonts', $webfonts);
@@ -1143,22 +1144,22 @@ if (!function_exists('mbudm_google_font_enqueue')){
 		}
 	}
 }
-/* 
-Admin enqueue 
+/*
+Admin enqueue
 - scripts and css used only in admin screens
 */
-function mbudm_admin_enqueue(){			  
+function mbudm_admin_enqueue(){
 	if( is_admin()){
 		// admin
 		wp_register_script('jquery-ui', get_template_directory_uri() . '/js/libs/jquery-ui-1.9.2.custom.min.js',array('jquery'),'1.9.2',true);
 		wp_enqueue_script('jquery-ui');
-		
+
 		wp_register_script('mb_admin',
 				get_template_directory_uri() . '/js/adminscripts.js',
 					   array('jquery-ui'),
 					   '1' );
 		wp_enqueue_script('mb_admin');
-		
+
 		 wp_register_style('mb_adminStyles', get_template_directory_uri() .'/css/admin.css' );
          wp_enqueue_style('mb_adminStyles');
 	}
@@ -1170,12 +1171,12 @@ function mbudm_customizer_live_preview()
 	$url = '/wp-content/themes/artpro/js/customizer.js';
 	wp_register_script('mbudm_customizer',$url, array( 'jquery','customize-preview' ),'',true);
 	wp_enqueue_script( 'mbudm_customizer' );
-	
+
 }
 add_action( 'customize_preview_init', 'mbudm_customizer_live_preview' );
 function mbudm_customize_css()
 {
-    include(mbudm_get_template_file_path('css_overrides.php')); 
+    include(mbudm_get_template_file_path('css_overrides.php'));
 }
 add_action( 'wp_head', 'mbudm_customize_css');
 
@@ -1218,8 +1219,8 @@ function &array_find_element_by_key($key, &$form) {
 }
 
 
-/* 
-add a value to a query string 
+/*
+add a value to a query string
 - note i only allows for one instance of each value
 */
 function add_querystring_var($url, $key, $value, $convert = true) {
@@ -1244,8 +1245,8 @@ function remove_querystring_var($url, $key) {
 /* FIXES */
 
 /* the_category triggers a html validation error */
-add_filter( 'the_category', 'add_nofollow_cat' ); 
-function add_nofollow_cat( $text ) { 
-	$text = str_replace('rel="category"', '', $text); 
-	return $text; 
+add_filter( 'the_category', 'add_nofollow_cat' );
+function add_nofollow_cat( $text ) {
+	$text = str_replace('rel="category"', '', $text);
+	return $text;
 }
